@@ -25,24 +25,29 @@ const Mail = () => {
 
     try {
       await emailjs.send(
-        'service_ngiuilw',
-        'template_2vhx7oi',
+        import.meta.env.VITE_EMAILJS_SERVICE_ID,
+        import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         {
           to_email: formData.to_email,
           from_email: formData.from_email,
           subject: formData.subject,
           message: formData.message
         },
-        'rYBONbcmHXN-pYDw_'
+        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       );
 
       setStatus('Message sent successfully!');
       setFormData({ to_email: 'sahilsingh0322@gmail.com', from_email: '', subject: '', message: '' });
 
       setTimeout(() => setStatus(''), 3000);
-    } catch (error) {
-      console.error('Error sending email:', error);
-      setStatus('Failed to send message. Please try again.');
+    } catch (error: any) {
+      console.error('EmailJS Error:', {
+        error,
+        status: error.status,
+        text: error.text,
+        response: error.response
+      });
+      setStatus(`Failed to send message: ${error.text || 'Unknown error'}`);
     }
   };
 
