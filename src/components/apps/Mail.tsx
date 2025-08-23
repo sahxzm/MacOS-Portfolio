@@ -2,11 +2,13 @@ import { useState } from 'react';
 import emailjs from '@emailjs/browser';
 import './Mail.css';
 
-// Debug log environment variables
+// Fallback public key if env variable is not loaded
+const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '71VMreuM8yd0zE3jA';
+
 console.log('EmailJS Config:', {
   serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID,
   templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
-  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY ? '***' : 'Not found'
+  publicKey: EMAILJS_PUBLIC_KEY ? '***' : 'Not found'
 });
 
 const Mail = () => {
@@ -28,6 +30,12 @@ const Mail = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!EMAILJS_PUBLIC_KEY) {
+      setStatus('Error: Missing EmailJS configuration');
+      return;
+    }
+
     setStatus('Sending...');
 
     const emailData = {
@@ -44,7 +52,7 @@ const Mail = () => {
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         emailData,
-        import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        EMAILJS_PUBLIC_KEY
       );
 
       console.log('Email sent successfully:', result);
