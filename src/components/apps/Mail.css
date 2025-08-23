@@ -1,0 +1,181 @@
+.mail-app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: #f5f5f7;
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.mail-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #d0d0d0;
+  overflow: hidden;
+}
+
+.mail-toolbar {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  background: linear-gradient(to bottom, #e0e0e0, #d0d0d0);
+  border-bottom: 1px solid #b8b8b8;
+  user-select: none;
+}
+
+.mail-toolbar-buttons {
+  display: flex;
+  gap: 6px;
+  margin-right: 8px;
+}
+
+.toolbar-button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  padding: 0;
+}
+
+.toolbar-button.close {
+  background-color: #ff5f56;
+}
+
+.toolbar-button.minimize {
+  background-color: #ffbd2e;
+}
+
+.toolbar-button.maximize {
+  background-color: #27c93f;
+}
+
+.mail-title {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+}
+
+.mail-form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 12px;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.mail-input,
+.mail-textarea {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: transparent;
+  padding: 8px 0;
+  border-bottom: 1px solid #e0e0e0;
+  transition: border-color 0.2s;
+}
+
+.mail-input:focus,
+.mail-textarea:focus {
+  border-bottom-color: #007aff;
+}
+
+.mail-textarea {
+  flex: 1;
+  resize: none;
+  line-height: 1.5;
+  border: none;
+  padding: 12px 0;
+  min-height: 200px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 16px 12px;
+  margin-top: auto;
+  background: #f8f8f8;
+  border-top: 1px solid #e0e0e0;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+}
+
+.send-button {
+  background-color: #FF3B30;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 24px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  min-width: 80px;
+  text-align: center;
+}
+
+.send-button:hover {
+  background-color: #E0352E;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+.send-button:active {
+  background-color: #C62F29;
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.status-message {
+  font-size: 12px;
+  color: #666;
+  padding: 0 8px;
+  transition: opacity 0.3s;
+  opacity: 0.9;
+}
+
+/* Remove default focus styles */
+.mail-input:focus,
+.mail-textarea:focus {
+  outline: none;
+}
+
+/* Style for the placeholder text */
+::placeholder {
+  color: #999;
+  opacity: 1;
+}
+
+/* WebKit browsers */
+::-webkit-input-placeholder {
+  color: #999;
+}
+
+/* Firefox */
+::-moz-placeholder {
+  color: #999;
+  opacity: 1;
+}
+
+/* Internet Explorer */
+:-ms-input-placeholder {
+  color: #999;
+}
+
+/* Edge */
+::-ms-input-placeholder {
+  color: #999;
+}

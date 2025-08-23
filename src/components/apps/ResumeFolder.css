@@ -1,0 +1,41 @@
+.resume-folder-content {
+  padding: 8px;
+  height: 100%;
+  background-color: white;
+  overflow-y: auto;
+}
+
+.file-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  user-select: none;
+  color: #1a1a1a; /* Dark text for better contrast on white */
+}
+
+.file-item:hover {
+  background-color: #f0f0f0; /* Light gray on hover */
+}
+
+.file-item:active {
+  background-color: #e0e0e0; /* Slightly darker gray when clicked */
+}
+
+.file-icon {
+  margin-right: 8px;
+  font-size: 1.2rem;
+  color: #1a1a1a; /* Dark icon color */
+}
+
+.file-name {
+  font-size: 0.9rem;
+  color: #1a1a1a; /* Dark text for better contrast */
+}
