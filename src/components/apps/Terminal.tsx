@@ -1,4 +1,5 @@
 import React from "react";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 interface TerminalState {
   content: JSX.Element[];
@@ -10,7 +11,7 @@ export default class Terminal extends React.Component<{}, TerminalState> {
   private curInputTimes = 0;
 
   private commands: {
-    [key: string]: (arg?: string) => void;
+    [key: string]: (arg?: string) => Promise<void>;
   };
 
   constructor(props: {}) {
@@ -28,6 +29,9 @@ export default class Terminal extends React.Component<{}, TerminalState> {
   }
 
   componentDidMount() {
+      <div className="text-green-300">
+      </div>
+    ;
     this.generateInputRow(this.curInputTimes);
   }
 
@@ -66,7 +70,7 @@ export default class Terminal extends React.Component<{}, TerminalState> {
   };
 
   /** ---------------- COMMANDS ---------------- */
-  help = () => {
+  help = async () => {
     const help = (
       <div>
         <div className="mb-1">Available Commands:</div>
@@ -84,12 +88,15 @@ export default class Terminal extends React.Component<{}, TerminalState> {
             <span className="text-red-400">help</span> - Show this menu
           </li>
         </ul>
+        <div className="mt-2 text-blue-300">
+          Try asking me anything! I'll use Gemini AI to answer your questions or command apart from the above commands.
+        </div>
       </div>
     );
     this.generateResultRow(this.curInputTimes, help);
   };
 
-  profile = () => {
+  profile = async () => {
     const response = (
       <div>
         <div className="text-blue-300">Name: Sahil Singh</div>
@@ -104,7 +111,7 @@ export default class Terminal extends React.Component<{}, TerminalState> {
     this.generateResultRow(this.curInputTimes, response);
   };
 
-  projects = () => {
+  projects = async () => {
     const response = (
       <div className="text-blue-300 space-y-1">
         <div>
@@ -132,7 +139,7 @@ export default class Terminal extends React.Component<{}, TerminalState> {
     this.generateResultRow(this.curInputTimes, response);
   };
 
-  resume = () => {
+  resume = async () => {
     const response = (
       <div className="text-blue-300">
         You can view my resume here:{" "}
@@ -149,23 +156,73 @@ export default class Terminal extends React.Component<{}, TerminalState> {
     this.generateResultRow(this.curInputTimes, response);
   };
 
-  keyPress = (e: React.KeyboardEvent) => {
+  private async handleAICommand(prompt: string) {
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+
+    if (!apiKey) {
+      this.generateResultRow(
+        this.curInputTimes,
+        <div className="text-yellow-400">
+          Error: Gemini API key is not set. Please check your .env file.
+        </div>
+      );
+      return;
+    }
+
+    try {
+      // Show typing indicator
+      const loadingId = this.curInputTimes;
+      const loadingRow = (
+        <div key={`ai-loading-${loadingId}`} className="text-blue-300">
+          Thinking...
+        </div>
+      );
+      this.addRow(loadingRow);
+
+      // Initialize Gemini with API key and generate response
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+
+      // Remove loading indicator and show response
+      this.setState(prev => ({
+        content: prev.content.filter(row => row.key !== `ai-loading-${loadingId}`)
+      }));
+
+      this.generateResultRow(
+        this.curInputTimes,
+        <div className="text-blue-300">{text}</div>
+      );
+    } catch (error) {
+      console.error('Error generating response:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      this.generateResultRow(
+        this.curInputTimes,
+        <div className="text-red-400">
+          Sorry, I encountered an error: {errorMessage}
+        </div>
+      );
+    }
+  }
+
+  keyPress = async (e: React.KeyboardEvent) => {
     const inputElement = e.currentTarget as HTMLInputElement;
     const inputText = inputElement.value.trim();
-    const [cmd, args] = inputText.split(" ");
+    const [cmd, ...args] = inputText.split(" ");
+    const fullCommand = args.length > 0 ? `${cmd} ${args.join(' ')}` : cmd;
 
     if (e.key === "Enter") {
       this.history.push(inputText);
-
       inputElement.setAttribute("readonly", "true");
 
       if (cmd && Object.keys(this.commands).includes(cmd)) {
-        this.commands[cmd](args);
+        await this.commands[cmd](args.join(' '));
       } else if (cmd) {
-        this.generateResultRow(
-          this.curInputTimes,
-          <span>{`zsh: command not found: ${cmd}`}</span>
-        );
+        // Use Gemini AI for unknown commands
+        await this.handleAICommand(fullCommand);
       }
 
       this.curHistory = this.history.length;
