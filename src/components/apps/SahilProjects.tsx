@@ -141,7 +141,6 @@ const SahilProjects = () => {
 
   return (
     <div className="sahil-projects flex h-full">
-      {/* Sidebar */}
       <div className="w-72 overflow-auto bg-gray-100 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700">
         <div className="p-4 border-b border-gray-200 dark:border-gray-700">
           <h2 className="text-lg font-semibold">Projects</h2>
@@ -180,7 +179,6 @@ const SahilProjects = () => {
         </ul>
       </div>
 
-      {/* Content */}
       <div className="flex-1 overflow-auto bg-white dark:bg-gray-900">
         {currentItem && (
           <div className="h-full">

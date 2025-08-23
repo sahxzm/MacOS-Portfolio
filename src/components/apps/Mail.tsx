@@ -2,7 +2,7 @@ import { useState } from 'react';
 import emailjs from '@emailjs/browser';
 import './Mail.css';
 
-// Fallback public key if env variable is not loaded
+// Fallback public key agar load nahi liya toh
 const EMAILJS_PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '71VMreuM8yd0zE3jA';
 
 console.log('EmailJS Config:', {

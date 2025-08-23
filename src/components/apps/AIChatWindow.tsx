@@ -46,7 +46,7 @@ export default function AIChatWindow({ onClose, onSendMessage, isLoading }: AICh
     const message = input.trim();
     if (!message || isLoading) return;
 
-    // Add user message
+
     const userMessage: Message = {
       id: Date.now().toString(),
       content: message,
@@ -57,7 +57,7 @@ export default function AIChatWindow({ onClose, onSendMessage, isLoading }: AICh
     setMessages(prev => [...prev, userMessage]);
     setInput('');
 
-    // Get AI response
+    // Gemini respond setting and config
     try {
       const response = await onSendMessage(message);
       const botMessage: Message = {
@@ -81,7 +81,7 @@ export default function AIChatWindow({ onClose, onSendMessage, isLoading }: AICh
 
   return (
     <div className="flex flex-col h-full w-full bg-white dark:bg-gray-800 rounded-xl overflow-hidden">
-      {/* Header */}
+     //header ka section
       <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
         <h2 className="text-lg font-semibold text-gray-900 dark:text-white">AI Assistant</h2>
         <button
@@ -93,7 +93,7 @@ export default function AIChatWindow({ onClose, onSendMessage, isLoading }: AICh
         </button>
       </div>
 
-      {/* Messages */}
+      //Messages ka section
       <div
         ref={listRef}
         className="flex-1 overflow-y-auto p-4 space-y-4"
@@ -120,7 +120,7 @@ export default function AIChatWindow({ onClose, onSendMessage, isLoading }: AICh
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input */}
+      //Input ka section
       <div className="p-4 border-t border-gray-200 dark:border-gray-700">
         <form onSubmit={handleSubmit} className="flex gap-2">
           <input

@@ -11,7 +11,7 @@ export interface UserSlice {
 }
 
 export const createUserSlice: StateCreator<UserSlice> = (set) => ({
-  typoraMd: `# Hi 👋\nThis is a simple clone of [Typora](https://typora.io/). Built on top of [Milkdown](https://milkdown.dev/), an open-source WYSIWYG markdown editor.`,
+  typoraMd: `# Hello 👋\n This is Typora clone built on top of Milkdown editor`,
   setTyporaMd: (v) => set(() => ({ typoraMd: v })),
   faceTimeImages: {},
   addFaceTimeImage: (v) =>

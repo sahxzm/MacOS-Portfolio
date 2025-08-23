@@ -40,12 +40,6 @@ const websites: WebsitesData = {
     title: "Frequently Visited",
     sites: [
       {
-        id: "hacker-news",
-        title: "Hacker News",
-        img: "img/sites/hacker.svg",
-        link: "https://news.ycombinator.com/",
-      },
-      {
         id: "github",
         title: "Github",
         img: "img/sites/github.svg",

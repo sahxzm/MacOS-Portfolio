@@ -12,7 +12,6 @@ export default function AIChatbot({ onClose }: AIChatbotProps) {
 
   const handleClose = () => {
     setIsOpen(false);
-    // Call the parent's onClose if it exists
     if (onClose) {
       onClose();
     }

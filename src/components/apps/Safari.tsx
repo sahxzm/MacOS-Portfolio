@@ -211,7 +211,7 @@ const Safari = ({ width }: SafariProps) => {
           <NavPage setGoURL={setGoURL} width={width as number} />
         ) : (
           <iframe
-            title={"Safari clone browser"}
+            title={"Safari browser"}
             src={state.goURL}
             className="safari-content w-full bg-white"
           />

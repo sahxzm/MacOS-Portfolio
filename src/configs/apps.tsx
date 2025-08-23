@@ -12,6 +12,7 @@ import SpinningCat from "~/components/apps/SpinningCat";
 import AIChatbot from "~/components/apps/AIChatbot";
 import SahilProfile from "~/components/apps/SahilProfile";
 import SahilProjects from "~/components/apps/SahilProjects";
+import MonacoEditor from "~/components/apps/MonacoEditor";
 
 const apps: AppsData[] = [
   {
@@ -92,6 +93,21 @@ const apps: AppsData[] = [
     x: -20,
     img: "img/icons/safari.png",
     content: <Safari />,
+  },
+  {
+    id: "Xcode",
+    title: "Xcode",
+    desktop: true,
+    dock: true,
+    show: false,
+    width: 1000,
+    height: 700,
+    minWidth: 800,
+    minHeight: 500,
+    x: 120,
+    y: 80,
+    img: "logo/xcode.png",
+    content: <MonacoEditor/>,
   },
   {
     id: "vscode",

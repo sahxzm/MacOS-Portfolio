@@ -1,47 +1,37 @@
-import { useRef } from "react";
 import Editor from "@monaco-editor/react";
 
 interface MonacoEditorProps {
-  onClose: () => void;
   initialCode?: string;
 }
 
 export default function MonacoEditor({
-  initialCode = "// Start coding here...",
-  onClose
+  initialCode = "// Start coding here...\n// Welcome to the code editor!",
 }: MonacoEditorProps) {
-  const editorRef = useRef<any>(null);
-
-  function handleEditorDidMount(editor: any) {
-    editorRef.current = editor;
-  }
+  const handleEditorDidMount = (editor: any) => {
+    // Focus the editor when mounted
+    editor.focus();
+  };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/80 flex flex-col">
-      <div className="bg-gray-800 h-10 flex items-center justify-between px-4">
-        <span className="text-white font-medium">Code Editor</span>
-        <button
-          onClick={onClose}
-          className="text-white hover:bg-gray-700 p-1 rounded"
-        >
-          ✕
-        </button>
-      </div>
-      <div className="flex-1">
-        <Editor
-          height="100%"
-          defaultLanguage="typescript"
-          defaultValue={initialCode}
-          theme="vs-dark"
-          onMount={handleEditorDidMount}
-          options={{
-            minimap: { enabled: true },
-            fontSize: 14,
-            scrollBeyondLastLine: false,
-            automaticLayout: true,
-          }}
-        />
-      </div>
+    <div className="w-full h-full">
+      <Editor
+        height="100%"
+        defaultLanguage="typescript"
+        value={initialCode}
+        theme="vs-dark"
+        onMount={handleEditorDidMount}
+        options={{
+          minimap: { enabled: true },
+          fontSize: 14,
+          scrollBeyondLastLine: false,
+          automaticLayout: true,
+          wordWrap: 'on',
+          formatOnPaste: true,
+          formatOnType: true,
+          lineNumbers: 'on',
+          tabSize: 2,
+        }}
+      />
     </div>
   );
 }

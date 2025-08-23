@@ -65,14 +65,13 @@ const Content = ({ contentID, contentURL }: ContentProps) => {
   const [storeMd, setStoreMd] = useState<{ [key: string]: string }>({});
   const [loading, setLoading] = useState<{ [key: string]: boolean }>({});
   const [error, setError] = useState<{ [key: string]: string | null }>({});
-  const dark = false; // Set to false by default, you can make this configurable
+  const dark = false;
 
   const fetchMarkdown = useCallback(
     (id: string, url: string) => {
       if (!storeMd[id] && !loading[id]) {
         setLoading(prev => ({ ...prev, [id]: true }));
 
-        // Handle both local and remote markdown files
         const isUrl = url.startsWith('http');
         const fetchUrl = isUrl ? url : `/markdown/${url.split('/').pop()}`;
 
@@ -143,12 +142,11 @@ const SahilProfile = () => {
     return <div>Profile section not found</div>;
   }
 
-  // Get the first (and only) item in the profile section
   const currentItem = profileSection.md[0];
 
   return (
     <div className="sahil font-avenir h-full">
-      {/* Content */}
+      //content section
       <div className="h-full overflow-auto bg-white dark:bg-gray-900">
         {currentItem && (
           <div className="p-6">
