@@ -25,15 +25,15 @@ const Mail = () => {
 
     try {
       await emailjs.send(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
+        'service_ngiuilw',
+        'template_2vhx7oi',
         {
           to_email: formData.to_email,
           from_email: formData.from_email,
           subject: formData.subject,
           message: formData.message
         },
-        'YOUR_PUBLIC_KEY'
+        'rYBONbcmHXN-pYDw_'
       );
 
       setStatus('Message sent successfully!');
