@@ -158,3 +158,41 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+/* Ensure Control Center appears above desktop icons */
+.control-center {
+  position: fixed;
+  top: 2.75rem;
+  right: 0.5rem;
+  z-index: 10 !important;
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.2);
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+}
+
+.dark .control-center {
+  background-color: rgba(30, 30, 30, 0.9);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Ensure desktop icons stay below Control Center */
+.desktop-icons-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 12;
+  pointer-events: none;
+}
+
+.desktop-icons-container > * {
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
+}

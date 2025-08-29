@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { user, wallpapers } from "~/configs";
+import { user } from "~/configs";
 import type { MacActions } from "~/types";
 import { useStore } from "~/stores";
 import { Lock, HelpCircle } from "lucide-react";
 
 export default function Login(props: MacActions) {
-  const dark = useStore((state) => state.dark);
+  const { wallpaper, dark } = useStore();
   const [password, setPassword] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -44,7 +44,11 @@ export default function Login(props: MacActions) {
     <div
       className="relative h-screen w-full flex flex-col justify-between text-white"
       style={{
-        background: `url(${dark ? wallpapers.night : wallpapers.day}) center/cover no-repeat`,
+        backgroundImage: 'var(--wallpaper-bg)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed'
       }}
     >
       {/* Top: Time & Date */}
@@ -58,7 +62,7 @@ export default function Login(props: MacActions) {
       </div>
 
       {/* Bottom: User login */}
-      <div className="pb-15 flex flex-col items-center space-y-5">
+      <div className="pb-2 flex flex-col items-center space-y-3">
         {/* Avatar */}
         <div className="w-18 h-18 rounded-full overflow-hidden border border-white/40 shadow-lg">
           <img
@@ -96,30 +100,9 @@ export default function Login(props: MacActions) {
         </div>
 
         {/* Hint text */}
-        <p className="text-xs text-white/70">
-          Your password is required to log in
+        <p className="text-sm text-white/90">
+          For password, enter anything you want
         </p>
-      </div>
-
-      {/* Bottom system actions */}
-      <div className="absolute bottom-2 w-full flex justify-center space-x-12 text-white/80">
-        {[
-         { icon: "i-ri:shut-down-line", label: "Shut Down", action: props.shutMac },
-         { icon: "i-ri:restart-line", label: "Restart", action: props.restartMac },
-         { icon: "i-gg:sleep", label: "Sleep", action: props.sleepMac },
-       ].map(({ icon, label, action }) => (
-         <button
-           key={label}
-           onClick={(e) => {
-             e.stopPropagation();
-             action(e);
-           }}
-            className="flex flex-col items-center hover:text-white transition-colors"
-          >
-            <span className={`${icon} text-2xl mb-1`} />
-            <span className="text-xs">{label}</span>
-          </button>
-        ))}
       </div>
     </div>
   );

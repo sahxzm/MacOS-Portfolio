@@ -1,0 +1,250 @@
+/* Widgets Container */
+.widgets-container {
+  position: fixed;
+  left: 20px;
+  top: 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  z-index: 50; /* Lower than app windows (10-20) but above desktop (0) */
+  -webkit-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  width: 320px;
+}
+
+/* Common Widget Styling */
+.widget {
+  background: rgba(30, 30, 30, 0.9);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  color: #8e8d8d;
+  overflow: hidden;
+  pointer-events: auto; /* This makes the widget clickable */
+  width: 100%;
+  box-sizing: border-box;
+  position: relative; /* Ensure z-index works correctly */
+  z-index: 1; /* Ensure widgets stack properly within container */
+}
+
+/* YouTube Widget */
+.youtube-widget {
+  padding: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.youtube-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  background: #000;
+}
+
+.youtube-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  pointer-events: auto;
+  z-index: 1 !important;
+}
+
+/* Clock and Calendar Container */
+.clock-calendar-container {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+}
+
+/* Clock Widget */
+.clock-widget {
+  width: 140px;
+  height: 140px;
+  padding: 6px;
+  flex-shrink: 0;
+  background: #f0f0f0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.clock-widget:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.logwork-clock-container {
+  width: 110%;
+  height: 110%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  box-sizing: border-box;
+}
+
+.logwork-clock-container a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: #333;
+  transition: transform 0.3s ease;
+  font-weight: 600;
+}
+
+.logwork-clock-container a:hover {
+  transform: scale(1.02);
+}
+
+.logwork-clock-container iframe {
+  border: none;
+  width: 100% !important;
+  height: 100% !important;
+  background: transparent;
+  filter: brightness(0) saturate(100%) invert(20%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(90%) contrast(90%);
+}
+
+/* Calendar Widget */
+.calendar-widget {
+  width: 140px;
+  height: 140px;
+  padding: 6px;
+  background: rgba(30, 30, 30, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.calendar-header {
+  margin-bottom: 4px;
+}
+
+.calendar-header h3 {
+  margin: 0;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: #f2f2f2;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 2px 0;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  text-align: center;
+  font-size: 9px;
+  flex-grow: 1;
+  align-content: start;
+}
+
+.day-header {
+  font-size: 8px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  padding: 1px 0;
+  text-align: center;
+}
+
+.day {
+  padding: 1px;
+  text-align: center;
+  color: #fff;
+  border-radius: 2px;
+  cursor: default;
+  font-size: 8px;
+  line-height: 1.2;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.day:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.day.today {
+  background: #007aff;
+  color: white;
+  font-weight: 600;
+}
+
+.day.empty {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .calendar-widget {
+    width: 100px;
+    height: 100px;
+    padding: 6px;
+  }
+
+  .calendar-header h3 {
+    font-size: 9px;
+  }
+
+  .day, .day-header {
+    font-size: 7px;
+    padding: 0;
+  }
+}
+
+@media (max-width: 400px) {
+  .widgets-container {
+    width: 280px;
+    left: 10px;
+  }
+
+  .clock-widget {
+    width: 100px;
+    height: 100px;
+  }
+
+  .calendar-widget {
+    width: 100px;
+    height: 100px;
+  }
+
+  .calendar-header h3 {
+    font-size: 11px;
+  }
+
+  .day, .day-header {
+    font-size: 9px;
+    padding: 2px;
+  }
+}

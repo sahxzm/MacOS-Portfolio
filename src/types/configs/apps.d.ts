@@ -5,6 +5,7 @@ export interface AppsData {
   img: string;
   show?: boolean;
   width?: number;
+  fullscreen?: boolean;
   height?: number;
   minWidth?: number;
   minHeight?: number;

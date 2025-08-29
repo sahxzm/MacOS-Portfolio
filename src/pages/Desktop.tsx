@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { apps, wallpapers } from "~/configs";
+import { apps } from "~/configs";
 import { minMarginY } from "~/utils";
 import type { MacActions } from "~/types";
 import AppWindow from "~/components/AppWindow";
@@ -8,6 +8,7 @@ import Spotlight from "~/components/Spotlight";
 import Dock from "~/components/dock/Dock";
 import ResumeFolder from "~/components/apps/ResumeFolder";
 import { useStore } from "~/stores";
+import Widgets from "~/components/Widgets";
 
 interface DesktopState {
   showApps: {
@@ -43,9 +44,10 @@ export default function Desktop(props: MacActions) {
   const [spotlightBtnRef, setSpotlightBtnRef] =
     useState<React.RefObject<HTMLDivElement> | null>(null);
 
-  const { dark, brightness } = useStore((state) => ({
+  const { dark, brightness, wallpaper } = useStore((state) => ({
     dark: state.dark,
     brightness: state.brightness,
+    wallpaper: state.wallpaper,
   }));
 
   const getAppsData = (): void => {
@@ -187,6 +189,15 @@ export default function Desktop(props: MacActions) {
     }
   };
 
+  const isAnyAppMaximizedOrFullscreen = (): boolean => {
+    return apps.some(
+      (app) =>
+        app.desktop &&
+        state.showApps[app.id] &&
+        (state.maxApps[app.id] || app.fullscreen)
+    );
+  };
+
   const renderAppWindows = () => {
     return apps.map((app) => {
       // Skip rendering if app is not shown or is fullscreen
@@ -244,10 +255,14 @@ export default function Desktop(props: MacActions) {
 
   return (
     <div
-      className="size-full overflow-hidden bg-center bg-cover"
+      className={`w-full h-full overflow-hidden select-none ${dark ? "dark" : ""}`}
       style={{
-        backgroundImage: `url(${dark ? wallpapers.night : wallpapers.day})`,
-        filter: `brightness(${(brightness as number) * 0.7 + 50}%)`,
+        backgroundImage: 'var(--wallpaper-bg, none)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed',
+        filter: `brightness(${(brightness as number) * 0.7 + 50}%)`
       }}
     >
       {/* Fullscreen Apps */}
@@ -255,8 +270,7 @@ export default function Desktop(props: MacActions) {
 
       {/* Rest of the UI */}
       {!Object.values(state.showApps).some((show, i) =>
-        show && apps[i]?.fullscreen
-      ) && (
+        show && apps[i]?.fullscreen) && (
         <>
           {/* Top Menu Bar */}
           <TopBar
@@ -270,116 +284,131 @@ export default function Desktop(props: MacActions) {
             setSpotlightBtnRef={setSpotlightBtnRef}
           />
 
-          {/* Desktop Apps */}
-          <div className="window-bound z-10 absolute" style={{ top: minMarginY }}>
-            {renderAppWindows()}
-            {/* Resume Folder on Desktop */}
-            <div
-              style={{
-                position: 'fixed',
-                right: '32px',
-                top: '32px',
-                width: '80px',
-                height: '100px',
-                backgroundColor: 'transparent',
-                cursor: 'pointer',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                zIndex: 1000
-              }}
-              onDoubleClick={() => openApp("resume")}
-            >
-              <div style={{
-                width: '48px',
-                height: '48px',
-                backgroundImage: 'url(/logo/resume.png)',
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center'
-              }} />
-              <div style={{
-                color: 'white',
-                marginTop: '8px',
-                fontSize: '12px',
-                textAlign: 'center'
-              }}>
-                Resume
+          {/* Desktop Icons and Apps */}
+          <div className="relative w-full h-full">
+            {/* Desktop Icons - Only show when no app is maximized or fullscreen */}
+            {!isAnyAppMaximizedOrFullscreen() && (
+              <div className="desktop-icons-container">
+                {/* Resume Folder on Desktop */}
+                <div
+                  style={{
+                    position: 'fixed',
+                    right: '32px',
+                    top: '32px',
+                    width: '80px',
+                    height: '100px',
+                    backgroundColor: 'transparent',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1000
+                  }}
+                  onDoubleClick={() => openApp("resume")}
+                >
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    backgroundImage: 'url(/logo/resume.png)',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center'
+                  }} />
+                  <div style={{
+                    color: 'white',
+                    marginTop: '8px',
+                    fontSize: '12px',
+                    textAlign: 'center'
+                  }}>
+                    Resume
+                  </div>
+                </div>
+
+                {/* Sahil Profile on Desktop */}
+                <div
+                  style={{
+                    position: 'fixed',
+                    right: '32px',
+                    top: '140px',
+                    width: '80px',
+                    height: '100px',
+                    backgroundColor: 'transparent',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1000
+                  }}
+                  onDoubleClick={() => openApp("sahil-profile")}
+                >
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    backgroundImage: 'url(/logo/aboutme.png)',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center'
+                  }} />
+                  <div style={{
+                    color: 'white',
+                    marginTop: '8px',
+                    fontSize: '12px',
+                    textAlign: 'center'
+                  }}>
+                    About Me
+                  </div>
+                </div>
+
+                {/* Sahil Projects on Desktop */}
+                <div
+                  style={{
+                    position: 'fixed',
+                    right: '32px',
+                    top: '248px',
+                    width: '80px',
+                    height: '100px',
+                    backgroundColor: 'transparent',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 1000
+                  }}
+                  onDoubleClick={() => openApp("sahil-projects")}
+                >
+                  <div style={{
+                    width: '48px',
+                    height: '48px',
+                    backgroundImage: 'url(/logo/finder.png)',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center'
+                  }} />
+                  <div style={{
+                    color: 'white',
+                    marginTop: '8px',
+                    fontSize: '12px',
+                    textAlign: 'center'
+                  }}>
+                    Projects
+                  </div>
+                </div>
               </div>
+            )}
+            {/* Desktop Apps */}
+            <div className="window-bound z-10 absolute" style={{ top: minMarginY }}>
+              {renderAppWindows()}
             </div>
 
-            {/* Sahil Profile on Desktop */}
-            <div
-              style={{
-                position: 'fixed',
-                right: '32px',
-                top: '140px',
-                width: '80px',
-                height: '100px',
-                backgroundColor: 'transparent',
-                cursor: 'pointer',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                zIndex: 1000
-              }}
-              onDoubleClick={() => openApp("sahil-profile")}
-            >
-              <div style={{
-                width: '48px',
-                height: '48px',
-                backgroundImage: 'url(/logo/aboutme.png)',
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center'
-              }} />
-              <div style={{
-                color: 'white',
-                marginTop: '8px',
-                fontSize: '12px',
-                textAlign: 'center'
-              }}>
-                About Me
+            {/* Widgets - Hide when any app is maximized or in fullscreen */}
+            {!isAnyAppMaximizedOrFullscreen() && (
+              <div className="fixed top-4 right-4 z-10 flex flex-col space-y-4">
+                <Widgets />
               </div>
-            </div>
-
-            {/* Sahil Projects on Desktop */}
-            <div
-              style={{
-                position: 'fixed',
-                right: '32px',
-                top: '248px',
-                width: '80px',
-                height: '100px',
-                backgroundColor: 'transparent',
-                cursor: 'pointer',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                zIndex: 1000
-              }}
-              onDoubleClick={() => openApp("sahil-projects")}
-            >
-              <div style={{
-                width: '48px',
-                height: '48px',
-                backgroundImage: 'url(/logo/finder.png)',
-                backgroundSize: 'contain',
-                backgroundRepeat: 'no-repeat',
-                backgroundPosition: 'center'
-              }} />
-              <div style={{
-                color: 'white',
-                marginTop: '8px',
-                fontSize: '12px',
-                textAlign: 'center'
-              }}>
-                Projects
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Spotlight */}

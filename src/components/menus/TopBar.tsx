@@ -242,10 +242,8 @@ const TopBar = (props: TopBarProps) => {
             btnRef={controlCenterBtnRef}
           />
         )}
-
         <TopBarItem>
-          <span>{format(state.date, "eee MMM d")}</span>
-          <span>{format(state.date, "h:mm aa")}</span>
+          <span>{format(state.date, "hh:mm:ss")}</span>
         </TopBarItem>
       </div>
     </div>
